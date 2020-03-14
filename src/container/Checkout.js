@@ -4,7 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 
 import CheckoutSummary from "../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "../components/Order/ContactData/ContactData";
-import * as orderAction from "../redux/action/order.action";
+
 
 class Checkout extends React.Component {
   // state = {

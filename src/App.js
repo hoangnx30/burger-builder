@@ -6,6 +6,7 @@ import Layout from "./hoc/layout/Layout";
 import BurgerBuilder from "./container/BurgerBuilder";
 import Checkout from "./container/Checkout";
 import Auth from "./container/Auth/Auth";
+import Logout from "./container/Auth/Logout";
 
 import "./App.module.css";
 
@@ -15,6 +16,7 @@ function App() {
       <Layout>
         <Switch>
           <Route path="/check-out" component={Checkout} />
+          <Route path="/logout" component={Logout} />
           <Route path="/orders" component={Orders} />
           <Route path="/auth" component={Auth} />
           <Route path="/" exact component={BurgerBuilder} />

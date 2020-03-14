@@ -50,6 +50,7 @@ const input = props => {
           className={inputClasses.join(" ")}
           {...props.elementConfig}
           value={props.value}
+          onChange={props.changed}
         />
       );
       break;

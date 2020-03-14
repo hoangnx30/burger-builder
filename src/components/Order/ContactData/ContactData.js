@@ -114,8 +114,7 @@ class ContactData extends React.Component {
       orderData: ordersData,
       timeOrder: Date(Date.now())
     };
-    debugger;
-    this.props.onOrderSubmitHandler(order);
+    this.props.onOrderSubmitHandler(order, this.props.token);
   };
 
   checkValidity(value, rules) {
@@ -189,14 +188,15 @@ class ContactData extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isLoading: state.orderState.isLoading
+    isLoading: state.orderState.isLoading,
+    token: state.authState.token
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOrderSubmitHandler: orderData =>
-      dispatch(orderAction.purchaseBurgerSuccessAsync(orderData))
+    onOrderSubmitHandler: (orderData, token) =>
+      dispatch(orderAction.purchaseBurgerSuccessAsync(orderData, token))
   };
 };
 
