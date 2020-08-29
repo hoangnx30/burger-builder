@@ -18,91 +18,91 @@ class ContactData extends React.Component {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Your name"
+          placeholder: "Your name",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
         touched: false,
-        errorMessage: "Name is invalid"
+        errorMessage: "Name is invalid",
       },
       street: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Street"
+          placeholder: "Street",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
         touched: false,
-        errorMessage: "Street is invalid"
+        errorMessage: "Street is invalid",
       },
       zipCode: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Zip Code"
+          placeholder: "Zip Code",
         },
         value: "",
         validation: {
           required: true,
           minLength: 5,
-          maxLength: 7
+          maxLength: 7,
         },
         valid: false,
         touched: false,
-        errorMessage: "Zipcode is invalid"
+        errorMessage: "Zipcode is invalid",
       },
       country: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Your Country"
+          placeholder: "Your Country",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
         touched: false,
-        errorMessage: "Country is invalid"
+        errorMessage: "Country is invalid",
       },
       email: {
         elementType: "input",
         elementConfig: {
           type: "email",
-          placeholder: "Your E-Mail"
+          placeholder: "Your E-Mail",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
         touched: false,
-        errorMessage: "Email is invalid"
+        errorMessage: "Email is invalid",
       },
       deliveryMethod: {
         elementType: "select",
         elementConfig: {
           options: [
             { value: "fastest", displayValue: "Fastest" },
-            { value: "cheapest", displayValue: "Cheapest" }
-          ]
+            { value: "cheapest", displayValue: "Cheapest" },
+          ],
         },
         validation: {},
         value: "fastest",
-        valid: true
-      }
+        valid: true,
+      },
     },
-    formValid: false
+    formValid: false,
   };
 
-  orderHandler = event => {
+  orderHandler = (event) => {
     event.preventDefault();
     const ordersData = {};
     for (const key in this.state.orderForm) {
@@ -112,7 +112,8 @@ class ContactData extends React.Component {
       ingredients: this.props.ingredients,
       price: this.props.price,
       orderData: ordersData,
-      timeOrder: Date(Date.now())
+      timeOrder: Date(Date.now()),
+      userId: this.props.userId,
     };
     this.props.onOrderSubmitHandler(order, this.props.token);
   };
@@ -155,13 +156,13 @@ class ContactData extends React.Component {
     }
     let form = (
       <form onSubmit={this.orderHandler}>
-        {formElementArray.map(element => {
+        {formElementArray.map((element) => {
           return (
             <Input
               key={element.id}
               elementType={element.config.elementType}
               elementConfig={element.config.elementConfig}
-              changed={event => this.inputChangeHandler(event, element.id)}
+              changed={(event) => this.inputChangeHandler(event, element.id)}
               invalid={!element.config.valid}
               shouldValidation={element.config.elementType}
               touched={element.config.touched}
@@ -186,17 +187,18 @@ class ContactData extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isLoading: state.orderState.isLoading,
-    token: state.authState.token
+    token: state.authState.token,
+    userId: state.authState.userId,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onOrderSubmitHandler: (orderData, token) =>
-      dispatch(orderAction.purchaseBurgerSuccessAsync(orderData, token))
+      dispatch(orderAction.purchaseBurgerSuccessAsync(orderData, token)),
   };
 };
 

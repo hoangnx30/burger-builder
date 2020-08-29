@@ -7,28 +7,28 @@ export const purchaseBurgerSuccess = (id, orderData) => {
     type: actionTypes.PURCHASE_BURGER_SUCCESS,
     payload: {
       id: id,
-      orderData: orderData
-    }
+      orderData: orderData,
+    },
   };
 };
 
-export const purchaseBurgerFail = error => {
+export const purchaseBurgerFail = (error) => {
   return {
     type: actionTypes.PURCHASE_BURGER_FAIL,
     payload: {
-      error: error
-    }
+      error: error,
+    },
   };
 };
 
 export const purchaseBurgerSuccessAsync = (orderData, token) => {
-  return dispatch => {
+  return (dispatch) => {
     axiosInstance
       .post("/orders.json?auth=" + token, orderData)
-      .then(response => {
+      .then((response) => {
         dispatch(purchaseBurgerSuccess(response.data, orderData));
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch(purchaseBurgerFail(error));
       });
   };
@@ -36,49 +36,50 @@ export const purchaseBurgerSuccessAsync = (orderData, token) => {
 
 export const purchaseBurgerStart = () => {
   return {
-    type: actionTypes.PURCHASE_BURGER_START
+    type: actionTypes.PURCHASE_BURGER_START,
   };
 };
 
 export const purchaseInit = () => {
   return {
-    type: actionTypes.PURCHASE_INIT
+    type: actionTypes.PURCHASE_INIT,
   };
 };
 
 const fetchOrderStart = () => {
   return {
-    type: actionTypes.FETCH_ORDER_START
+    type: actionTypes.FETCH_ORDER_START,
   };
 };
 
-export const fetchOrderStartAsync = token => {
-  return dispatch => {
+export const fetchOrderStartAsync = (token, userId) => {
+  return (dispatch) => {
+    const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"&print=pretty`;
     dispatch(fetchOrderStart());
     axiosInstance
-      .get("/orders.json?auth=" + token)
-      .then(response => {
+      .get("/orders.json" + queryParams)
+      .then((response) => {
         const orders = [];
         for (const key in response.data) {
           orders.push({ ...response.data[key], id: key });
         }
         dispatch(fetchOrderSuccess(orders));
       })
-      .catch(error => dispatch(fetchOrderFail()));
+      .catch((error) => dispatch(fetchOrderFail()));
   };
 };
 
-export const fetchOrderSuccess = data => {
+export const fetchOrderSuccess = (data) => {
   return {
     type: actionTypes.FETCH_ORDER_SUCCESS,
     payload: {
-      data: data
-    }
+      data: data,
+    },
   };
 };
 
 export const fetchOrderFail = () => {
   return {
-    type: actionTypes.FETCH_ORDER_FAIL
+    type: actionTypes.FETCH_ORDER_FAIL,
   };
 };

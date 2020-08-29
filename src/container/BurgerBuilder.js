@@ -15,7 +15,7 @@ import * as orderAction from "../redux/action/order.action";
 class BurgerBuilder extends React.Component {
   state = {
     purchasable: true,
-    purchasing: false
+    purchasing: false,
   };
 
   componentDidMount() {
@@ -27,7 +27,11 @@ class BurgerBuilder extends React.Component {
   }
 
   purchasingHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.history.push("/auth");
+    }
   };
 
   purchaseCanceled = () => {
@@ -41,7 +45,7 @@ class BurgerBuilder extends React.Component {
 
   render() {
     const disableInfo = {
-      ...this.props.ingredients
+      ...this.props.ingredients,
     };
 
     for (let key in disableInfo) {
@@ -65,6 +69,7 @@ class BurgerBuilder extends React.Component {
             price={this.props.totalPrice}
             purchasable={this.updatepurchaseState(this.props.totalPrice)}
             ordered={this.purchasingHandler}
+            isAuthenticated={this.props.isAuthenticated}
           />
         </Aux>
       );
@@ -91,23 +96,24 @@ class BurgerBuilder extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     ingredients: state.burgerBuilderState.ingredients,
     totalPrice: state.burgerBuilderState.totalPrice,
     error: state.burgerBuilderState.error,
-    purchased: state.orderState.purchased
+    purchased: state.orderState.purchased,
+    isAuthenticated: state.authState.token !== null,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onAddIngredientsHandler: ingredientName =>
+    onAddIngredientsHandler: (ingredientName) =>
       dispatch(burgerBuilderAction.addIngredient(ingredientName)),
-    onRemoveIngredientHandler: ingredientName =>
+    onRemoveIngredientHandler: (ingredientName) =>
       dispatch(burgerBuilderAction.removeIngredient(ingredientName)),
     onSetIngredients: () => dispatch(burgerBuilderAction.setIngredientsAsync()),
-    onPurchaseInit: () => dispatch(orderAction.purchaseInit())
+    onPurchaseInit: () => dispatch(orderAction.purchaseInit()),
   };
 };
 

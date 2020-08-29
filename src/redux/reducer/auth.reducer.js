@@ -4,7 +4,7 @@ const initialState = {
   token: null,
   userId: null,
   error: null,
-  isLoading: false
+  isLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,26 +12,27 @@ const reducer = (state = initialState, action) => {
     case actionTypes.AUTH_START:
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
       };
     case actionTypes.AUTH_SUCCESS:
       return {
         ...state,
         isLoading: false,
         token: action.payload.tokenId,
-        userId: action.payload.userId
+        userId: action.payload.userId,
+        error: null,
       };
     case actionTypes.AUTH_FAIL:
       return {
         ...state,
         isLoading: false,
-        error: action.payload.error.response.data.error
+        error: action.payload.error.response.data.error,
       };
     case actionTypes.AUTH_LOGOUT:
       return {
         ...state,
         token: null,
-        userId: null
+        userId: null,
       };
     default:
       return state;

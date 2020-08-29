@@ -4,19 +4,23 @@ import Aux from "../Aux";
 import "./Layout.css";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
-
+import withErrorHandler from "../withErrorHandler/withErrorHandler";
+import axiosInstance from "../../axios-order";
 class Layout extends React.Component {
   state = {
-    showSideDrawer: false
+    showSideDrawer: false,
   };
+
   sideDrawerCloseHandler = () => {
     this.setState({ showSideDrawer: false });
   };
+
   menuHandle = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return { showSideDrawer: !prevState.showSideDrawer };
     });
   };
+
   render() {
     return (
       <Aux>
@@ -35,10 +39,13 @@ class Layout extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.authState.token !== null
+    isAuthenticated: state.authState.token !== null,
   };
 };
 
-export default connect(mapStateToProps)(Layout);
+export default withErrorHandler(
+  connect(mapStateToProps)(Layout),
+  axiosInstance
+);

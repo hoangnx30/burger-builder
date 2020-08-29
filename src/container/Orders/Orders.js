@@ -10,7 +10,7 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 
 class Orders extends React.Component {
   componentDidMount() {
-    this.props.onFetchOrderStart(this.props.token);
+    this.props.onFetchOrderStart(this.props.token, this.props.userId);
   }
 
   render() {
@@ -19,7 +19,7 @@ class Orders extends React.Component {
         {this.props.isFetching ? (
           <Spinner />
         ) : (
-          this.props.orders.map(order => {
+          this.props.orders.map((order) => {
             return (
               <Order
                 key={order.id}
@@ -34,18 +34,19 @@ class Orders extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     orders: state.orderState.orders,
     isFetching: state.orderState.isFetching,
-    token: state.authState.token
+    token: state.authState.token,
+    userId: state.authState.userId,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchOrderStart: token =>
-      dispatch(orderAction.fetchOrderStartAsync(token))
+    onFetchOrderStart: (token, userId) =>
+      dispatch(orderAction.fetchOrderStartAsync(token, userId)),
   };
 };
 

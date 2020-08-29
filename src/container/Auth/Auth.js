@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Input from "../../components/UI/Input/Input";
@@ -16,33 +17,33 @@ class Auth extends React.Component {
         elementType: "input",
         elementConfig: {
           type: "email",
-          placeholder: "Your Email"
+          placeholder: "Your Email",
         },
         value: "",
         validation: {
           required: true,
-          isEmail: true
+          isEmail: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
       password: {
         errorMessage: "Email is Invalid",
         elementType: "input",
         elementConfig: {
           type: "password",
-          placeholder: "Your password"
+          placeholder: "Your password",
         },
         value: "",
         validation: {
           required: true,
-          minLength: 6
+          minLength: 6,
         },
         valid: false,
-        touched: false
-      }
+        touched: false,
+      },
     },
-    isSignup: true
+    isSignup: true,
   };
 
   checkValidity(value, rules) {
@@ -84,13 +85,13 @@ class Auth extends React.Component {
           event.target.value,
           this.state.controls[controlName].validation
         ),
-        touched: true
-      }
+        touched: true,
+      },
     };
     this.setState({ controls: updatedControls });
   };
 
-  onSubmitHandler = event => {
+  onSubmitHandler = (event) => {
     event.preventDefault();
     this.props.onAuth(
       this.state.controls.email.value,
@@ -100,7 +101,7 @@ class Auth extends React.Component {
   };
 
   switchToSignUp = () => {
-    this.setState(preState => {
+    this.setState((preState) => {
       return { isSignup: !preState.isSignup };
     });
   };
@@ -110,11 +111,11 @@ class Auth extends React.Component {
     for (let key in this.state.controls) {
       formElementArray.push({
         id: key,
-        config: this.state.controls[key]
+        config: this.state.controls[key],
       });
     }
 
-    let form = formElementArray.map(element => {
+    let form = formElementArray.map((element) => {
       return (
         <Input
           key={element.id}
@@ -123,7 +124,7 @@ class Auth extends React.Component {
           invalid={!element.config.isValid}
           shouldValidate={element.config.validation}
           touched={element.config.touched}
-          changed={event => this.inputChangeHandler(event, element.id)}
+          changed={(event) => this.inputChangeHandler(event, element.id)}
           elementType={element.config.elementType}
           errorMessage={element.config.errorMessage}
         />
@@ -138,8 +139,19 @@ class Auth extends React.Component {
     if (this.props.error) {
       errorMessage = <p>{this.props.error.message}</p>;
     }
+
+    let authRedirect = null;
+    if (this.props.isAuthenticated && !this.props.building) {
+      authRedirect = <Redirect to="/" />;
+    }
+
+    if (this.props.isAuthenticated && this.props.building) {
+      authRedirect = <Redirect to="/check-out" />;
+    }
+
     return (
       <div className={classes.Auth}>
+        {authRedirect}
         {errorMessage}
         <form onSubmit={this.onSubmitHandler}>
           {form}
@@ -153,17 +165,19 @@ class Auth extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isLoading: state.authState.isLoading,
-    error: state.authState.error
+    error: state.authState.error,
+    isAuthenticated: state.authState.token,
+    building: state.burgerBuilderState.building,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignup) =>
-      dispatch(authActions.authAsync(email, password, isSignup))
+      dispatch(authActions.authAsync(email, password, isSignup)),
   };
 };
 
