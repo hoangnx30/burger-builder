@@ -28,7 +28,7 @@ class Auth extends React.Component {
         touched: false,
       },
       password: {
-        errorMessage: "Email is Invalid",
+        errorMessage: "Password is Invalid",
         elementType: "input",
         elementConfig: {
           type: "password",
@@ -102,6 +102,8 @@ class Auth extends React.Component {
 
   switchToSignUp = () => {
     this.setState((preState) => {
+      this.props.onClearError();
+
       return { isSignup: !preState.isSignup };
     });
   };
@@ -178,6 +180,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignup) =>
       dispatch(authActions.authAsync(email, password, isSignup)),
+    onClearError: () => dispatch(authActions.clearError()),
   };
 };
 

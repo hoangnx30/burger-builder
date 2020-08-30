@@ -34,6 +34,11 @@ const reducer = (state = initialState, action) => {
         token: null,
         userId: null,
       };
+    case actionTypes.CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
     default:
       return state;
   }

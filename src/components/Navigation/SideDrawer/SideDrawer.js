@@ -6,7 +6,7 @@ import BackDrop from "../../UI/Backdrop/Backdrop";
 import Aux from "../../../hoc/Aux";
 
 import classes from "./SideDrawer.module.css";
-const sideDrawer = props => {
+const sideDrawer = (props) => {
   let attachedClasses = [classes.SideDrawer, classes.Close];
   if (props.open) {
     attachedClasses = [classes.SideDrawer, classes.Open];
@@ -15,12 +15,12 @@ const sideDrawer = props => {
   return (
     <Aux>
       <BackDrop show={props.open} clicked={props.closed} />
-      <div className={attachedClasses.join(" ")}>
+      <div className={attachedClasses.join(" ")} onClick={props.closed}>
         <div className={classes.Logo}>
           <Logo />
         </div>
         <nav>
-          <NavigationItems isAuthenticated={props.isAuthenticated}/>
+          <NavigationItems isAuthenticated={props.isAuthenticated} />
         </nav>
       </div>
     </Aux>

@@ -60,7 +60,6 @@ export const authAsync = (email, password, isSignup) => {
 };
 
 export const checkTokenTimeOut = (expiresIn) => {
-  console.log(expiresIn);
   return (dispatch) => {
     setTimeout(() => {
       dispatch(logout());
@@ -84,8 +83,6 @@ export const authCheckState = () => {
     } else {
       const expirationDate = new Date(localStorage.getItem("expirationDate"));
       if (expirationDate > new Date()) {
-        console.log(expirationDate.getSeconds());
-        console.log(new Date());
         dispatch(authSuccess({ idToken: token, localId: userId }));
         dispatch(
           checkTokenTimeOut(
@@ -96,5 +93,11 @@ export const authCheckState = () => {
         dispatch(logout());
       }
     }
+  };
+};
+
+export const clearError = () => {
+  return {
+    type: actionTypes.CLEAR_ERROR,
   };
 };
