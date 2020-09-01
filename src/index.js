@@ -6,9 +6,12 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
+import createSagaMiddleware from "redux-saga";
 
+import { watch } from "./redux/sagas";
 import rootReducer from "./redux/reducer";
-import thunk from "redux-thunk";
+
+const sagaMiddleware = createSagaMiddleware();
 
 const composeEnhancers =
   process.env.NODE_ENV === "development"
@@ -17,8 +20,11 @@ const composeEnhancers =
 
 const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(sagaMiddleware))
 );
+
+sagaMiddleware.run(watch)
+
 
 const app = (
   <Provider store={store}>

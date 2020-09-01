@@ -40,6 +40,7 @@ const fetchOrderSuccess = (state, action) => {
   return updateObject(state, {
     orders: action.payload.data,
     isFetching: false,
+    isLoading: false
   });
 };
 
