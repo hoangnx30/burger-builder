@@ -12,7 +12,7 @@ import withErrorHandler from "../hoc/withErrorHandler/withErrorHandler";
 import * as burgerBuilderAction from "../redux/action/burgerBuilder.action";
 import * as orderAction from "../redux/action/order.action";
 
-class BurgerBuilder extends React.Component {
+export class BurgerBuilder extends React.Component {
   state = {
     purchasable: true,
     purchasing: false,
@@ -22,8 +22,8 @@ class BurgerBuilder extends React.Component {
     this.props.onSetIngredients();
   }
 
-  updatepurchaseState(totalPrice) {
-    return +totalPrice.toFixed(2) - 4.0 === 0;
+  updatepurchaseState = (totalPrice) => {
+    return totalPrice && +totalPrice.toFixed(2) - 4.0 === 0;
   }
 
   purchasingHandler = () => {
@@ -33,6 +33,7 @@ class BurgerBuilder extends React.Component {
       this.props.history.push("/auth");
     }
   };
+
 
   purchaseCanceled = () => {
     this.setState({ purchasing: false });
